@@ -191,11 +191,11 @@ class LaminaBuscador extends JPanel{
 
 class LaminaAniadir extends JPanel{
 	
-	Font miFuente=new Font("Arial",Font.BOLD,20);
+	Font miFuente=new Font("Arial",Font.BOLD,30);
 	
 	public LaminaAniadir() {
 		
-		setLayout(new GridLayout(3,1));
+		setLayout(new GridLayout(4,1));
 		
 		JPanel panel1=new JPanel();
 		
@@ -203,7 +203,7 @@ class LaminaAniadir extends JPanel{
 		
 		JPanel panel3=new JPanel();
 		
-		
+		JPanel panel4=new JPanel();
 		
 		//---------------------------------------------------
 		
@@ -217,7 +217,9 @@ class LaminaAniadir extends JPanel{
 		
 		cajaTarea.add(tarea);
 		
-		JTextField cuadroTarea=new JTextField();
+		cajaTarea.add(Box.createVerticalStrut(25));
+		
+		JTextField cuadroTarea=new JTextField(20);
 		
 		cuadroTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
@@ -227,11 +229,17 @@ class LaminaAniadir extends JPanel{
 		
 		//------------------------------------------------------
 		
+		Box cajaTipo=Box.createVerticalBox();
+		
 		JLabel tipoTarea=new JLabel("Tipo de Tarea");
 		
 		tipoTarea.setFont(miFuente);
 		
 		tipoTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		cajaTipo.add(tipoTarea);
+		
+		cajaTipo.add(Box.createVerticalStrut(25));
 		
 		JComboBox comboTipo=new JComboBox();
 		
@@ -243,7 +251,13 @@ class LaminaAniadir extends JPanel{
 		
 		comboTipo.addItem("Opcional");
 		
+		cajaTipo.add(comboTipo);
+		
+		panel2.add(cajaTipo);
+		
 		//------------------------------------------------------
+		
+		Box cajaDesc=Box.createVerticalBox();
 		
 		JLabel descripcion=new JLabel("Descripcion");
 		
@@ -251,7 +265,15 @@ class LaminaAniadir extends JPanel{
 		
 		descripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JTextPane texto1=new JTextPane();
+		cajaDesc.add(descripcion);
+		
+		cajaDesc.add(Box.createVerticalStrut(25));
+		
+		JTextArea texto1=new JTextArea(8,30);
+		
+		cajaDesc.add(new JScrollPane(texto1));
+		
+		panel3.add(cajaDesc);
 		
 		//--------------------------------------------------------
 		
@@ -259,39 +281,15 @@ class LaminaAniadir extends JPanel{
 		
 		aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		cajaAniadir.add(tarea);
+		panel4.add(aniadir);
 		
-		cajaAniadir.add(Box.createVerticalStrut(10));
+		add(panel1);
 		
-		cajaAniadir.add(cuadroTarea);
+		add(panel2);
 		
-		cajaAniadir.add(Box.createVerticalStrut(20));
+		add(panel3);
 		
-		cajaAniadir.add(tipoTarea);
-		
-		cajaAniadir.add(Box.createVerticalStrut(10));
-		
-		cajaAniadir.add(comboTipo);
-		
-		cajaAniadir.add(Box.createVerticalStrut(20));
-		
-		cajaAniadir.add(descripcion);
-		
-		cajaAniadir.add(Box.createVerticalStrut(10));
-		
-		cajaAniadir.add(texto1);
-		
-		cajaAniadir.add(Box.createVerticalStrut(20));
-		
-		cajaAniadir.add(aniadir);
-		
-		cajaAniadir.add(Box.createVerticalStrut(10));
-		
-		panel.add(cajaAniadir);
-		
-		add(panel, BorderLayout.CENTER);
-		
-		
+		add(panel4);
 		
 		
 	}
