@@ -168,13 +168,15 @@ class LaminaTarea extends JPanel{
 
 class LaminaBuscador extends JPanel{
 	
+	private JComboBox comboBuscador;
+	
 	public LaminaBuscador() {
 		
 		setLayout(new BorderLayout());
 		
 		JPanel laminaCombo=new JPanel();
 		
-		JComboBox comboBuscador=new JComboBox();
+		comboBuscador=new JComboBox();
 		
 		comboBuscador.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
@@ -193,9 +195,11 @@ class LaminaAniadir extends JPanel{
 	
 	Font miFuente=new Font("Arial",Font.BOLD,30);
 	
+	private JTextField cuadroTarea;
+	
 	public LaminaAniadir() {
 		
-		setLayout(new GridLayout(4,1));
+		setLayout(new GridLayout(3,1));
 		
 		JPanel panel1=new JPanel();
 		
@@ -203,7 +207,6 @@ class LaminaAniadir extends JPanel{
 		
 		JPanel panel3=new JPanel();
 		
-		JPanel panel4=new JPanel();
 		
 		//---------------------------------------------------
 		
@@ -219,7 +222,7 @@ class LaminaAniadir extends JPanel{
 		
 		cajaTarea.add(Box.createVerticalStrut(25));
 		
-		JTextField cuadroTarea=new JTextField(20);
+		cuadroTarea=new JTextField(20);
 		
 		cuadroTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
@@ -267,21 +270,25 @@ class LaminaAniadir extends JPanel{
 		
 		cajaDesc.add(descripcion);
 		
-		cajaDesc.add(Box.createVerticalStrut(25));
+		cajaDesc.add(Box.createVerticalStrut(15));
 		
-		JTextArea texto1=new JTextArea(8,30);
+		JTextArea texto1=new JTextArea(5,35);
 		
 		cajaDesc.add(new JScrollPane(texto1));
 		
+		
+		
+		JButton aniadir=new JButton("Añadir");
+		
+		cajaDesc.add(aniadir);
+		
+		
+		
+		aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel3.add(cajaDesc);
 		
 		//--------------------------------------------------------
 		
-		JButton aniadir=new JButton("Añadir");
-		
-		aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		panel4.add(aniadir);
 		
 		add(panel1);
 		
@@ -289,7 +296,7 @@ class LaminaAniadir extends JPanel{
 		
 		add(panel3);
 		
-		add(panel4);
+	
 		
 		
 	}
