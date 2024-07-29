@@ -1,7 +1,7 @@
 package com.List;
 
 import java.awt.*;
-
+import java.awt.event.*;
 import javax.swing.*;
 
 public class Graficos {
@@ -93,23 +93,83 @@ class LaminaTarea extends JPanel{
 		
 		cajaInicio.add(buscarTarea);
 		
+		buscarTarea.addActionListener(new AccionBuscar());
+		
 		
 		//--------------------------------------------------------
 		
 		Box cajaCentral=Box.createHorizontalBox();//creamos una caja horizontal a la que añadiremos nuestra caja vertical para posteriormente colorcarla en el centro de nuestra lamina
 		
-		
-		
 		cajaCentral.add(cajaInicio);
-		
-		
 		
 		add(cajaCentral,BorderLayout.CENTER);
 		
 		
 	}
+	
+	private class AccionBuscar implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+			abrirNuevoMarco(new LaminaBuscador(),"Buscador de tareas");
+			
+		}
+		
+	}
+	
+	public void abrirNuevoMarco(JPanel lamina,String titulo) {
+		
+		JFrame nuevoMarco=new JFrame();
+		
+		nuevoMarco.setVisible(true);
+		
+		nuevoMarco.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		Toolkit miPantalla=Toolkit.getDefaultToolkit();
+		
+		Dimension tamano=miPantalla.getScreenSize();
+		
+		int ancho=tamano.width;
+		
+		int alto=tamano.height;
+		
+		nuevoMarco.setBounds(ancho/4,alto/4,ancho/2,alto/2);
+		
+		nuevoMarco.setTitle(titulo);
+		
+		nuevoMarco.add(lamina);
+		
+		
+		
+	}
+	
+	
 }
 
+class LaminaBuscador extends JPanel{
+	
+	public LaminaBuscador() {
+		
+		setLayout(new BorderLayout());
+		
+		JPanel laminaCombo=new JPanel();
+		
+		JComboBox comboBuscador=new JComboBox();
+		
+		comboBuscador.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		comboBuscador.setEditable(true);
+		
+		laminaCombo.add(comboBuscador);
+
+		add(laminaCombo,BorderLayout.CENTER);
+		
+		
+		
+	}
+}
 
 
 
