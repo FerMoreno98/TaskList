@@ -2,6 +2,8 @@ package com.List;
 
 import java.awt.*;
 import java.awt.event.*;
+
+
 import javax.swing.*;
 
 public class Graficos {
@@ -117,7 +119,11 @@ class LaminaTarea extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
-			abrirNuevoMarco(new LaminaAniadir(),"Añadir tarea");
+			LaminaBuscador laminaBuscador=new LaminaBuscador();
+			
+			
+			
+			abrirNuevoMarco(new LaminaAniadir(laminaBuscador),"Añadir tarea");
 			
 		}
 		
@@ -168,7 +174,7 @@ class LaminaTarea extends JPanel{
 
 class LaminaBuscador extends JPanel{
 	
-	private JComboBox comboBuscador;
+	private JComboBox<Tarea> comboBuscador;
 	
 	public LaminaBuscador() {
 		
@@ -189,6 +195,11 @@ class LaminaBuscador extends JPanel{
 		
 		
 	}
+	
+	public void aniadirTarea(Tarea t) {
+		
+		comboBuscador.addItem(t);
+	}
 }
 
 class LaminaAniadir extends JPanel{
@@ -197,7 +208,20 @@ class LaminaAniadir extends JPanel{
 	
 	private JTextField cuadroTarea;
 	
-	public LaminaAniadir() {
+	private LaminaBuscador laminaBuscador;
+	
+	private JComboBox comboTipo;
+	
+	private JTextArea texto1;
+	
+	/*public LaminaAniadir(LaminaBuscador laminaBuscador) {
+		
+		this.laminaBuscador=laminaBuscador;
+	}*/
+	
+	public LaminaAniadir(LaminaBuscador laminaBuscador) {
+		
+		this.laminaBuscador=laminaBuscador;
 		
 		setLayout(new GridLayout(3,1));
 		
@@ -244,11 +268,11 @@ class LaminaAniadir extends JPanel{
 		
 		cajaTipo.add(Box.createVerticalStrut(25));
 		
-		JComboBox comboTipo=new JComboBox();
+		comboTipo=new JComboBox();
 		
 		comboTipo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		comboTipo.addItem("Muy importante");
+		comboTipo.addItem("Importante");
 		
 		comboTipo.addItem("Aplazabel");
 		
@@ -272,7 +296,7 @@ class LaminaAniadir extends JPanel{
 		
 		cajaDesc.add(Box.createVerticalStrut(15));
 		
-		JTextArea texto1=new JTextArea(5,35);
+		texto1=new JTextArea(5,35);
 		
 		cajaDesc.add(new JScrollPane(texto1));
 		
@@ -282,7 +306,7 @@ class LaminaAniadir extends JPanel{
 		
 		cajaDesc.add(aniadir);
 		
-		
+		aniadir.addActionListener(new AccionBotonAniadir());
 		
 		aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel3.add(cajaDesc);
@@ -301,6 +325,30 @@ class LaminaAniadir extends JPanel{
 		
 	}
 	
+	private class AccionBotonAniadir implements ActionListener{
+		
+		private int indice=comboTipo.getSelectedIndex();
+		
+		private String nombre=cuadroTarea.getText();
+		
+		private String importancia=(String) comboTipo.getItemAt(indice);
+		
+		private String descripcion=texto1.getText();
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+			Tarea tarea=new Tarea(nombre,importancia,descripcion);
+			
+			laminaBuscador.aniadirTarea(tarea);
+			
+		}
+		
+		
+	}
+	
+
 }
 
 
