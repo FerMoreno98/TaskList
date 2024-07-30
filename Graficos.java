@@ -198,6 +198,8 @@ class LaminaBuscador extends JPanel{
 
 		add(laminaCombo,BorderLayout.CENTER);
 		
+		aniadirElementos();
+		
 		
 		
 	}
@@ -205,6 +207,45 @@ class LaminaBuscador extends JPanel{
 	public void aniadirTarea(Tarea t) {
 		
 		comboBuscador.addItem(t);
+	}
+	
+	public void aniadirElementos() {
+	
+	try {
+		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+	}catch(Exception r) {
+		
+		System.out.println("no se conecta");
+		
+		System.exit(1);
+		
+	}
+	
+	String sql="select * from tablaTareas";
+	
+	try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/tareas","root","");
+			PreparedStatement ps=con.prepareStatement(sql)){
+		
+	
+		
+		ResultSet rs=ps.executeQuery();
+		
+		while(rs.next()) {
+			
+			Tarea tareas=new Tarea(rs.getString(1),rs.getString(2),rs.getString(3));
+			
+			comboBuscador.addItem(tareas);
+			
+		}
+			
+		
+	}catch(Exception t) {
+		
+		t.printStackTrace();
+		
+	}
 	}
 }
 
@@ -378,11 +419,11 @@ class LaminaAniadir extends JPanel{
 				ps.setString(3, descripcion);
 				
 				int r=ps.executeUpdate();
-				
+					
 				
 			}catch(Exception t) {
 				
-				System.out.println("Error");
+				t.printStackTrace();
 				
 			}
 			
