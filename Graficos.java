@@ -327,7 +327,7 @@ class LaminaBuscador extends JPanel{
 
 class LaminaAniadir extends JPanel{
 	
-	Font miFuente=new Font("Arial",Font.BOLD,30);
+	Font miFuente=new Font("Arial",Font.BOLD,25);
 	
 	private JTextField cuadroTarea;
 	
@@ -342,7 +342,7 @@ class LaminaAniadir extends JPanel{
 		
 		this.laminaBuscador=laminaBuscador;
 		
-		setLayout(new GridLayout(3,1));
+		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		
 		JPanel panel1=new JPanel();
 		
@@ -423,20 +423,34 @@ class LaminaAniadir extends JPanel{
 		
 		JButton aniadir=new JButton("Añadir");
 		
+		cajaDesc.add(Box.createVerticalStrut(15));
+		
 		cajaDesc.add(aniadir);
 		
 		aniadir.addActionListener(new AccionBotonAniadir());
 		
 		aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
+		
+		
 		panel3.add(cajaDesc);
 		
 		//--------------------------------------------------------
 		
+		panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		panel2.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		panel3.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
 		
 		add(panel1);
 		
+		
+		
 		add(panel2);
+		
+	
 		
 		add(panel3);
 		
