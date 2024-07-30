@@ -344,120 +344,135 @@ class LaminaAniadir extends JPanel{
 		
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		
-		JPanel panel1=new JPanel();
+		add(createLaminaTarea());
 		
-		JPanel panel2=new JPanel();
+		add(createLaminaTipo());
 		
-		JPanel panel3=new JPanel();
-		
-		
-		//---------------------------------------------------
-		
-		Box cajaTarea=Box.createVerticalBox();
-		
-		JLabel tarea=new JLabel("Tarea");
-		
-		tarea.setFont(miFuente);
-		
-		tarea.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		cajaTarea.add(tarea);
-		
-		cajaTarea.add(Box.createVerticalStrut(25));
-		
-		cuadroTarea=new JTextField(20);
-		
-		cuadroTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		cajaTarea.add(cuadroTarea);
-		
-		panel1.add(cajaTarea);
-		
-		//------------------------------------------------------
-		
-		Box cajaTipo=Box.createVerticalBox();
-		
-		JLabel tipoTarea=new JLabel("Tipo de Tarea");
-		
-		tipoTarea.setFont(miFuente);
-		
-		tipoTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		cajaTipo.add(tipoTarea);
-		
-		cajaTipo.add(Box.createVerticalStrut(25));
-		
-		comboTipo=new JComboBox();
-		
-		comboTipo.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		comboTipo.addItem("Importante");
-		
-		comboTipo.addItem("Aplazable");
-		
-		comboTipo.addItem("Opcional");
-		
-		cajaTipo.add(comboTipo);
-		
-		panel2.add(cajaTipo);
-		
-		//------------------------------------------------------
-		
-		Box cajaDesc=Box.createVerticalBox();
-		
-		JLabel descripcion=new JLabel("Descripcion");
-		
-		descripcion.setFont(miFuente);
-		
-		descripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		cajaDesc.add(descripcion);
-		
-		cajaDesc.add(Box.createVerticalStrut(15));
-		
-		texto1=new JTextArea(5,35);
-		
-		cajaDesc.add(new JScrollPane(texto1));
-		
-		
-		
-		JButton aniadir=new JButton("Añadir");
-		
-		cajaDesc.add(Box.createVerticalStrut(15));
-		
-		cajaDesc.add(aniadir);
-		
-		aniadir.addActionListener(new AccionBotonAniadir());
-		
-		aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		
-		
-		panel3.add(cajaDesc);
-		
-		//--------------------------------------------------------
-		
-		panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
-		
-		panel2.setLayout(new FlowLayout(FlowLayout.CENTER));
-		
-		panel3.setLayout(new FlowLayout(FlowLayout.CENTER));
-		
-		
-		add(panel1);
-		
-		
-		
-		add(panel2);
-		
-	
-		
-		add(panel3);
-		
-	
+		add(createLaminaDesc());
 		
 		
 	}
+		
+		private JPanel createLaminaTarea() {
+			
+			JPanel panel=new JPanel();
+			
+			panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+			
+			Box cajaTarea=Box.createVerticalBox();
+			
+			JLabel tarea=new JLabel("Tarea");
+			
+			
+			tarea.setFont(miFuente);
+			
+			tarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			cajaTarea.add(tarea);
+			
+			cajaTarea.add(Box.createVerticalStrut(25));
+			
+			cuadroTarea=new JTextField(20);
+			
+			cuadroTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			cajaTarea.add(cuadroTarea);
+			
+			panel.add(cajaTarea);
+			
+			return panel;
+			
+			
+		}
+		
+		private JPanel createLaminaTipo() {
+			
+			JPanel panel=new JPanel();
+			
+			panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+			
+			Box cajaTipo=Box.createVerticalBox();
+			
+			JLabel tipoTarea=new JLabel("Tipo de Tarea");
+			
+			tipoTarea.setFont(miFuente);
+			
+			tipoTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			cajaTipo.add(tipoTarea);
+			
+			cajaTipo.add(Box.createVerticalStrut(25));
+			
+			comboTipo=new JComboBox();
+			
+			comboTipo.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			comboTipo.addItem("Importante");
+			
+			comboTipo.addItem("Aplazable");
+			
+			comboTipo.addItem("Opcional");
+			
+			cajaTipo.add(comboTipo);
+			
+			panel.add(cajaTipo);
+			
+			return panel;
+			
+			
+		}
+		
+		private JPanel createLaminaDesc() {
+			
+			JPanel panel=new JPanel();
+			
+			panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+			
+			Box cajaDesc=Box.createVerticalBox();
+			
+			JLabel descripcion=new JLabel("Descripcion");
+			
+			descripcion.setFont(miFuente);
+			
+			descripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			cajaDesc.add(descripcion);
+			
+			cajaDesc.add(Box.createVerticalStrut(15));
+			
+			texto1=new JTextArea(5,35);
+			
+			cajaDesc.add(new JScrollPane(texto1));
+			
+			
+			
+			JButton aniadir=new JButton("Añadir");
+			
+			cajaDesc.add(Box.createVerticalStrut(15));
+			
+			cajaDesc.add(aniadir);
+			
+			aniadir.addActionListener(new AccionBotonAniadir());
+			
+			aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			
+			
+			panel.add(cajaDesc);
+			
+			return panel;
+			
+			
+		}
+		
+	
+		
+		
+	
+	
+		
+		
+	
 	
 	private class AccionBotonAniadir implements ActionListener{
 		
@@ -521,9 +536,10 @@ class LaminaAniadir extends JPanel{
 		
 		
 	}
+	}
 	
 
-}
+
 
 
 
