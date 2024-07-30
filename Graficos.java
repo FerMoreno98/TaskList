@@ -23,6 +23,8 @@ public class Graficos {
 
 class MarcoTarea extends JFrame{
 	
+	private LaminaBuscador laminaBuscador;
+	
 	public MarcoTarea(){
 	
 	Toolkit miPantalla=Toolkit.getDefaultToolkit();
@@ -37,7 +39,9 @@ class MarcoTarea extends JFrame{
 	
 	setTitle("Gestor de tareas");
 	
-	add(new LaminaTarea());
+	laminaBuscador=new LaminaBuscador();
+	
+	add(new LaminaTarea(laminaBuscador));
 	
 	
 	
@@ -47,7 +51,11 @@ class MarcoTarea extends JFrame{
 
 class LaminaTarea extends JPanel{
 	
-	public LaminaTarea() {
+	private LaminaBuscador laminaBuscador;
+	
+	public LaminaTarea(LaminaBuscador laminaBuscador) {
+		
+		this.laminaBuscador=laminaBuscador;
 		
 		//cambiamos el layout para colocar los elementos en el centro
 		setLayout(new BorderLayout());
@@ -119,10 +127,6 @@ class LaminaTarea extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
-			LaminaBuscador laminaBuscador=new LaminaBuscador();
-			
-			
-			
 			abrirNuevoMarco(new LaminaAniadir(laminaBuscador),"Añadir tarea");
 			
 		}
@@ -137,7 +141,7 @@ class LaminaTarea extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
-			abrirNuevoMarco(new LaminaBuscador(),"Buscador de tareas");
+			abrirNuevoMarco(laminaBuscador,"Buscador de tareas");
 			
 		}
 		
@@ -176,6 +180,7 @@ class LaminaBuscador extends JPanel{
 	
 	private JComboBox<Tarea> comboBuscador;
 	
+	
 	public LaminaBuscador() {
 		
 		setLayout(new BorderLayout());
@@ -208,16 +213,12 @@ class LaminaAniadir extends JPanel{
 	
 	private JTextField cuadroTarea;
 	
-	private LaminaBuscador laminaBuscador;
-	
 	private JComboBox comboTipo;
 	
 	private JTextArea texto1;
 	
-	/*public LaminaAniadir(LaminaBuscador laminaBuscador) {
-		
-		this.laminaBuscador=laminaBuscador;
-	}*/
+	private LaminaBuscador laminaBuscador;
+	
 	
 	public LaminaAniadir(LaminaBuscador laminaBuscador) {
 		
@@ -274,7 +275,7 @@ class LaminaAniadir extends JPanel{
 		
 		comboTipo.addItem("Importante");
 		
-		comboTipo.addItem("Aplazabel");
+		comboTipo.addItem("Aplazable");
 		
 		comboTipo.addItem("Opcional");
 		
@@ -309,6 +310,7 @@ class LaminaAniadir extends JPanel{
 		aniadir.addActionListener(new AccionBotonAniadir());
 		
 		aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
 		panel3.add(cajaDesc);
 		
 		//--------------------------------------------------------
@@ -327,21 +329,27 @@ class LaminaAniadir extends JPanel{
 	
 	private class AccionBotonAniadir implements ActionListener{
 		
-		private int indice=comboTipo.getSelectedIndex();
 		
-		private String nombre=cuadroTarea.getText();
-		
-		private String importancia=(String) comboTipo.getItemAt(indice);
-		
-		private String descripcion=texto1.getText();
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
+			 int indice=comboTipo.getSelectedIndex();
+			
+			 String nombre=cuadroTarea.getText();
+			
+			 String importancia=(String) comboTipo.getItemAt(indice);
+			
+			 String descripcion=texto1.getText();
+			
 			Tarea tarea=new Tarea(nombre,importancia,descripcion);
 			
 			laminaBuscador.aniadirTarea(tarea);
+			
+			cuadroTarea.setText("");
+			
+			texto1.setText("");
 			
 		}
 		
