@@ -2,7 +2,7 @@ package com.List;
 
 import java.awt.*;
 import java.awt.event.*;
-
+import java.sql.*;
 
 import javax.swing.*;
 
@@ -38,7 +38,7 @@ class MarcoTarea extends JFrame{
 	setBounds(ancho/4,alto/4,ancho/2,alto/2);
 	
 	setTitle("Gestor de tareas");
-	
+	//instanciamos la lamina buscador para poder pasarselo por parametro
 	laminaBuscador=new LaminaBuscador();
 	
 	add(new LaminaTarea(laminaBuscador));
@@ -53,8 +53,9 @@ class LaminaTarea extends JPanel{
 	
 	private LaminaBuscador laminaBuscador;
 	
+	//lo primero, le pasamos por parametro la Lamina buscador al constructor de la lamina tarea
 	public LaminaTarea(LaminaBuscador laminaBuscador) {
-		
+		//le decimos al constructor que la lamina del buscador que le pasamos por parametro es la misma que la que hay en la clase lamina buscador
 		this.laminaBuscador=laminaBuscador;
 		
 		//cambiamos el layout para colocar los elementos en el centro
@@ -200,7 +201,7 @@ class LaminaBuscador extends JPanel{
 		
 		
 	}
-	
+	//añadimos el metodo aniadir tarea
 	public void aniadirTarea(Tarea t) {
 		
 		comboBuscador.addItem(t);
@@ -219,7 +220,7 @@ class LaminaAniadir extends JPanel{
 	
 	private LaminaBuscador laminaBuscador;
 	
-	
+	//hacemos lo mismo con el metodo laminaAniadir, le pasamos por parametro laminaBuscador y le decimos que la lamina buscador que hay aqui es la misma que la de la clase lamina buscador
 	public LaminaAniadir(LaminaBuscador laminaBuscador) {
 		
 		this.laminaBuscador=laminaBuscador;
@@ -350,6 +351,40 @@ class LaminaAniadir extends JPanel{
 			cuadroTarea.setText("");
 			
 			texto1.setText("");
+			
+			//-----------------------------------------------
+			
+			try {
+				
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				
+			}catch(Exception r) {
+				
+				System.out.println("no se conecta");
+				
+				System.exit(1);
+				
+			}
+			
+			String sql="insert into tablaTareas (Nombre,Importancia,Descripcion) values(?,?,?);";
+			
+			try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/tareas","root","");
+					PreparedStatement ps=con.prepareStatement(sql)){
+				
+				ps.setString(1,nombre);
+				
+				ps.setString(2, importancia);
+				
+				ps.setString(3, descripcion);
+				
+				int r=ps.executeUpdate();
+				
+				
+			}catch(Exception t) {
+				
+				System.out.println("Error");
+				
+			}
 			
 		}
 		
