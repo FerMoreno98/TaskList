@@ -186,7 +186,9 @@ class LaminaBuscador extends JPanel{
 		
 		setLayout(new BorderLayout());
 		
-		JPanel laminaCombo=new JPanel();
+		Box cajaBuscador=Box.createVerticalBox();
+		
+		JPanel contenedor=new JPanel(new GridBagLayout());
 		
 		comboBuscador=new JComboBox();
 		
@@ -194,9 +196,39 @@ class LaminaBuscador extends JPanel{
 		
 		comboBuscador.setEditable(true);
 		
-		laminaCombo.add(comboBuscador);
-
-		add(laminaCombo,BorderLayout.CENTER);
+		comboBuscador.setMaximumSize(new Dimension(200,35));
+		
+		cajaBuscador.add(comboBuscador);
+	
+		cajaBuscador.add(Box.createVerticalStrut(20));
+		
+		JButton eliminarTarea=new JButton("Eliminar tarea");
+		
+		eliminarTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		eliminarTarea.addActionListener(new AccionBotonEliminar());
+		
+		cajaBuscador.add(eliminarTarea);
+		
+		cajaBuscador.add(Box.createVerticalStrut(20));
+		
+		JButton editarTarea=new JButton("Editar tarea");
+		
+		editarTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		cajaBuscador.add(editarTarea);
+		
+		GridBagConstraints gbc=new GridBagConstraints();
+		
+		gbc.gridx=0;
+		
+		gbc.gridy=0;
+		
+		gbc.anchor=GridBagConstraints.CENTER;
+		
+		contenedor.add(cajaBuscador, gbc);
+		
+		add(contenedor,BorderLayout.CENTER);
 		
 		aniadirElementos();
 		
@@ -208,6 +240,8 @@ class LaminaBuscador extends JPanel{
 		
 		comboBuscador.addItem(t);
 	}
+	
+	//--------------------------------------------------------------------------- Funcionalidad base de datos del boton añadir para guardar en el buscador las tareas
 	
 	public void aniadirElementos() {
 	
@@ -246,7 +280,49 @@ class LaminaBuscador extends JPanel{
 		t.printStackTrace();
 		
 	}
+	
+	//--------------------------------------------------------------- Accion del Boton eliminar
 	}
+	
+	private class AccionBotonEliminar implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+			Tarea tareaSeleccionada=(Tarea) comboBuscador.getSelectedItem();
+			
+			if(tareaSeleccionada!=null) {
+			
+			String tareaNombre=tareaSeleccionada.getNombre();
+		
+			
+			String sql="delete from tablaTareas where Nombre=?";
+			
+			try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/tareas","root","");
+					PreparedStatement ps=con.prepareStatement(sql)){
+				
+				ps.setString(1,tareaNombre);
+				
+				int r=ps.executeUpdate();
+					
+				
+			}catch(Exception t) {
+				
+				t.printStackTrace();
+				
+			}
+			
+			comboBuscador.setSelectedItem(null);
+			
+		}else{
+			JOptionPane.showMessageDialog(LaminaBuscador.this,"No has seleccionado ninguna tarea");
+		}
+			}
+		
+	}
+	
+	
 }
 
 class LaminaAniadir extends JPanel{
