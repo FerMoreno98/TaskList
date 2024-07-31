@@ -7,6 +7,7 @@ import java.sql.*;
 import javax.swing.*;
 
 public class Graficos {
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -168,11 +169,14 @@ class LaminaBuscador extends JPanel{
 	
 	private JComboBox<Tarea> comboBuscador;
 	
-	//private Tarea t=(Tarea)comboBuscador.getSelectedItem();
 	
 	private String estadoTarea;
 	
 	private JButton marcarTarea;
+	
+	private ButtonGroup grupoFiltro;
+	
+	private JRadioButton botonImpor,botonAplaz,botonOpci;
 	
 	
 	public LaminaBuscador() {
@@ -222,6 +226,7 @@ class LaminaBuscador extends JPanel{
 		
 		
 		
+		
 		marcarTarea=new JButton();
 		
 		actualizarBotonEstado();
@@ -230,9 +235,37 @@ class LaminaBuscador extends JPanel{
 		
 		marcarTarea.addActionListener(new AccionBotonEstado());
 		
-		
-		
 		cajaBuscador.add(marcarTarea);
+		
+		JPanel panelFiltrado=new JPanel();
+		
+		grupoFiltro=new ButtonGroup();
+		
+		botonImpor=new JRadioButton("Importante");
+		
+		botonAplaz=new JRadioButton("Aplazable");
+		
+		botonOpci=new JRadioButton("Opcional");
+		
+		JButton botonFiltro=new JButton("Filtrar");
+		
+		botonFiltro.addActionListener(new AccionBotonFiltrar());
+		
+		grupoFiltro.add(botonImpor);
+		
+		grupoFiltro.add(botonAplaz);
+		
+		grupoFiltro.add(botonOpci);
+		
+		panelFiltrado.add(botonImpor);
+		
+		panelFiltrado.add(botonAplaz);
+		
+		panelFiltrado.add(botonOpci);
+		
+		panelFiltrado.add(botonFiltro);
+		
+		
 		
 		
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -247,6 +280,8 @@ class LaminaBuscador extends JPanel{
 		
 		add(contenedor,BorderLayout.CENTER);
 		
+		add(panelFiltrado,BorderLayout.SOUTH);
+		
 		aniadirElementos();
 		
 		
@@ -257,6 +292,8 @@ class LaminaBuscador extends JPanel{
 		
 		comboBuscador.addItem(t);
 	}
+	
+	//metodo para actualizar el estado del boton cuando lo pulsas
 	
 	private void actualizarBotonEstado() {
 		
@@ -278,6 +315,7 @@ class LaminaBuscador extends JPanel{
 			Tarea tareaSeleccionada=(Tarea)comboBuscador.getSelectedItem();
 			
 			if(tareaSeleccionada!=null) {
+				
 				ClaseUtilidades.alternarEstado(tareaSeleccionada);
 				
 				actualizarBotonEstado();
@@ -637,6 +675,63 @@ class LaminaBuscador extends JPanel{
 		
 		
 	}
+	
+			private class AccionBotonFiltrar implements ActionListener{
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+					
+					
+					
+					
+					String importancia="";
+					
+					if(botonImpor.isSelected()) {
+						
+						importancia="Importante";
+						
+					}else if(botonAplaz.isSelected()) {
+						
+						importancia="Aplazable";
+						
+					}else if(botonOpci.isSelected()) {
+						
+						importancia="Opcional";
+						
+					}
+					
+					String sql="select * from tablaTareas where importancia=?";
+					
+					try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/tareas","root","");
+							PreparedStatement ps=con.prepareStatement(sql)){
+						
+						ps.setString(1, importancia);
+						
+						ResultSet rs=ps.executeQuery();
+						
+						comboBuscador.removeAllItems();
+						
+						while(rs.next()) {
+							
+							String nombreTarea=rs.getString("Nombre");
+							
+							Tarea t=new Tarea(nombreTarea,importancia);
+							
+							comboBuscador.addItem(t);
+						}
+						
+					}catch(Exception e3) {
+						
+						e3.printStackTrace();
+					}
+					
+					
+				}
+				
+				
+			}
 	
 	
 }

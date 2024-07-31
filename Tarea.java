@@ -39,6 +39,11 @@ public class Tarea {
 		this.descripcion = descripcion;
 		this.hecha=false;
 	}
+	
+	public Tarea(String nombre,String importancia) {
+		this.nombre=nombre;
+		this.importancia=importancia;
+	}
 
 
 	public int getId() {
