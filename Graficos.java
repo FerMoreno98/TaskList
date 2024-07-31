@@ -51,6 +51,9 @@ class MarcoTarea extends JFrame{
 	
 }
 
+//-----------------------------------------------------------------------------------Lamina para la lamina principal
+
+
 class LaminaTarea extends JPanel{
 	
 	private LaminaBuscador laminaBuscador;
@@ -158,10 +161,18 @@ class LaminaTarea extends JPanel{
 	
 	
 }
+//------------------------------------------------------------------------------------Lamina para el buscador de tareas
+
 
 class LaminaBuscador extends JPanel{
 	
 	private JComboBox<Tarea> comboBuscador;
+	
+	//private Tarea t=(Tarea)comboBuscador.getSelectedItem();
+	
+	private String estadoTarea;
+	
+	private JButton marcarTarea;
 	
 	
 	public LaminaBuscador() {
@@ -171,6 +182,8 @@ class LaminaBuscador extends JPanel{
 		Box cajaBuscador=Box.createVerticalBox();
 		
 		JPanel contenedor=new JPanel(new GridBagLayout());
+		
+		
 		
 		comboBuscador=new JComboBox();
 		
@@ -182,6 +195,8 @@ class LaminaBuscador extends JPanel{
 	
 		cajaBuscador.add(Box.createVerticalStrut(20));
 		
+		
+		
 		JButton eliminarTarea=new JButton("Eliminar tarea");
 		
 		eliminarTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -192,6 +207,8 @@ class LaminaBuscador extends JPanel{
 		
 		cajaBuscador.add(Box.createVerticalStrut(20));
 		
+		
+		
 		JButton editarTarea=new JButton("Editar tarea");
 		
 		editarTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -199,6 +216,24 @@ class LaminaBuscador extends JPanel{
 		editarTarea.addActionListener(new BotonAccionEditar());
 		
 		cajaBuscador.add(editarTarea);
+		
+		cajaBuscador.add(Box.createVerticalStrut(20));
+		
+		
+		
+		
+		marcarTarea=new JButton();
+		
+		actualizarBotonEstado();
+		
+		marcarTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		marcarTarea.addActionListener(new AccionBotonEstado());
+		
+		
+		
+		cajaBuscador.add(marcarTarea);
+		
 		
 		GridBagConstraints gbc=new GridBagConstraints();
 		
@@ -222,6 +257,53 @@ class LaminaBuscador extends JPanel{
 		
 		comboBuscador.addItem(t);
 	}
+	
+	private void actualizarBotonEstado() {
+		
+		Tarea tareaSeleccionada=(Tarea)comboBuscador.getSelectedItem();
+		
+		String textoBoton=ClaseUtilidades.estadoDeTarea(tareaSeleccionada);
+		
+		marcarTarea.setText(textoBoton);
+	}
+	
+	
+	
+	private class AccionBotonEstado implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+			Tarea tareaSeleccionada=(Tarea)comboBuscador.getSelectedItem();
+			
+			if(tareaSeleccionada!=null) {
+				ClaseUtilidades.alternarEstado(tareaSeleccionada);
+				
+				actualizarBotonEstado();
+				
+			}else {
+				JOptionPane.showConfirmDialog(LaminaBuscador.this, "No has seleccionado ninguna tarea");
+			}
+			
+			String sql="update tablaTareas set hecha=? where id=?";
+			
+			try (Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/tareas","root","");
+					PreparedStatement ps=con.prepareStatement(sql)){
+				
+				ps.setBoolean(1,tareaSeleccionada.getHecha());
+				
+				ps.setInt(2, tareaSeleccionada.getId());
+				
+				int r=ps.executeUpdate();
+			
+		}catch(Exception e2) {
+			e2.printStackTrace();
+		}
+	}
+		
+}
+		
 	
 	//--------------------------------------------------------------------------- Funcionalidad base de datos del boton añadir para guardar en el buscador las tareas
 	
@@ -250,7 +332,7 @@ class LaminaBuscador extends JPanel{
 		
 		while(rs.next()) {
 			
-			Tarea tareas=new Tarea(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
+			Tarea tareas=new Tarea(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getBoolean(5));
 			
 			comboBuscador.addItem(tareas);
 			
@@ -304,6 +386,8 @@ class LaminaBuscador extends JPanel{
 		
 	}
 	
+	//----------------------------------------------------------------------------------Accion boton editar
+	
 	private class BotonAccionEditar implements ActionListener{
 
 		@Override
@@ -316,7 +400,7 @@ class LaminaBuscador extends JPanel{
 			
 		}
 		
-			// TODO Auto-generated method stub
+			
 			
 			class LaminaEditar extends JPanel{
 				
@@ -556,6 +640,8 @@ class LaminaBuscador extends JPanel{
 	
 	
 }
+
+//---------------------------------------------------------------------Lamina para añadir tareas
 
 class LaminaAniadir extends JPanel{
 	

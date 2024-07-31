@@ -11,6 +11,8 @@ public class Tarea {
 	
 	private String descripcion;
 	
+	private boolean hecha;
+	
 	
 
 	public Tarea(String nombre, String importancia, String descripcion) {
@@ -27,6 +29,15 @@ public class Tarea {
 		this.nombre = nombre;
 		this.importancia = importancia;
 		this.descripcion = descripcion;
+	}
+	
+	public Tarea(int id,String nombre, String importancia, String descripcion,boolean hecha) {
+		super();
+		this.id=id;
+		this.nombre = nombre;
+		this.importancia = importancia;
+		this.descripcion = descripcion;
+		this.hecha=false;
 	}
 
 
@@ -68,6 +79,15 @@ public class Tarea {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	} 
+	
+	public boolean getHecha() {
+		return hecha;
+	}
+	
+	public void setHecha(boolean hecha) {
+		
+		this.hecha=hecha;
+	}
 	
 	
 	
