@@ -176,8 +176,6 @@ class LaminaBuscador extends JPanel{
 		
 		comboBuscador.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		comboBuscador.setEditable(true);
-		
 		comboBuscador.setMaximumSize(new Dimension(200,35));
 		
 		cajaBuscador.add(comboBuscador);
@@ -252,7 +250,7 @@ class LaminaBuscador extends JPanel{
 		
 		while(rs.next()) {
 			
-			Tarea tareas=new Tarea(rs.getString(1),rs.getString(2),rs.getString(3));
+			Tarea tareas=new Tarea(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
 			
 			comboBuscador.addItem(tareas);
 			
@@ -516,24 +514,19 @@ class LaminaBuscador extends JPanel{
 							
 							String nuevaDesc=texto1.getText();
 							
-							String tareaNombre=tareaSeleccionada.getNombre();
-							
-							String tareaImpor=tareaSeleccionada.getImportancia();
-							
-							String tareaDesc=tareaSeleccionada.getDescripcion();
+							int id=tareaSeleccionada.getId();
+					
 						
 							
-							String sql="update tablaTareas set Nombre=?,Importancia=?,Descripcion=? where 1=1";
-
+							String sql="update tablaTareas set Nombre=?,Importancia=?,Descripcion=? where id=?";
 							
 							try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/tareas","root","");
 									PreparedStatement ps=con.prepareStatement(sql)){
 								ps.setString(1, nuevoNombre);
 								ps.setString(2, nuevaImpor);
 								ps.setString(3, nuevaDesc);
-								ps.setString(4,tareaNombre);
-								ps.setString(5, tareaImpor);
-								ps.setString(6, tareaDesc);
+								ps.setInt(4, id);
+							
 								
 								int r=ps.executeUpdate();
 									
@@ -544,7 +537,7 @@ class LaminaBuscador extends JPanel{
 								
 							}
 							
-							comboBuscador.setSelectedItem(null);
+							JOptionPane.showMessageDialog(LaminaBuscador.this, "Se ha editado su tarea correctamente");
 							
 						}else{
 							JOptionPane.showMessageDialog(LaminaBuscador.this,"No has seleccionado ninguna tarea");

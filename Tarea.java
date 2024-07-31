@@ -3,6 +3,8 @@ package com.List;
 
 public class Tarea {
 	
+	private int id;
+	
 	private String nombre;
 	
 	private String importancia;
@@ -13,12 +15,25 @@ public class Tarea {
 
 	public Tarea(String nombre, String importancia, String descripcion) {
 		super();
+		
+		this.nombre = nombre;
+		this.importancia = importancia;
+		this.descripcion = descripcion;
+	}
+	
+	public Tarea(int id,String nombre, String importancia, String descripcion) {
+		super();
+		this.id=id;
 		this.nombre = nombre;
 		this.importancia = importancia;
 		this.descripcion = descripcion;
 	}
 
 
+	public int getId() {
+		return id;
+	}	
+	
 
 	public String getNombre() {
 		return nombre;
