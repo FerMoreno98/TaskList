@@ -43,9 +43,11 @@ class MarcoTarea extends JFrame{
 	
 	add(new LaminaTarea(laminaBuscador));
 	
-	
-	
 	}
+	
+	
+	
+	
 	
 }
 
@@ -117,8 +119,12 @@ class LaminaTarea extends JPanel{
 		
 		add(cajaCentral,BorderLayout.CENTER);
 		
-		
 	}
+	
+	
+		
+		
+	
 	
 	//Accion del boton añadir
 	
@@ -128,7 +134,7 @@ class LaminaTarea extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
-			abrirNuevoMarco(new LaminaAniadir(laminaBuscador),"Añadir tarea");
+			ClaseUtilidades.abrirNuevoMarco(new LaminaAniadir(laminaBuscador),"Añadir tarea");
 			
 		}
 		
@@ -142,37 +148,13 @@ class LaminaTarea extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
-			abrirNuevoMarco(laminaBuscador,"Buscador de tareas");
+			ClaseUtilidades.abrirNuevoMarco(laminaBuscador,"Buscador de tareas");
 			
 		}
 		
 	}
 	
-	public void abrirNuevoMarco(JPanel lamina,String titulo) {
-		
-		JFrame nuevoMarco=new JFrame();
-		
-		nuevoMarco.setVisible(true);
-		
-		nuevoMarco.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		Toolkit miPantalla=Toolkit.getDefaultToolkit();
-		
-		Dimension tamano=miPantalla.getScreenSize();
-		
-		int ancho=tamano.width;
-		
-		int alto=tamano.height;
-		
-		nuevoMarco.setBounds(ancho/4,alto/4,ancho/2,alto/2);
-		
-		nuevoMarco.setTitle(titulo);
-		
-		nuevoMarco.add(lamina);
-		
-		
-		
-	}
+
 	
 	
 }
@@ -215,6 +197,8 @@ class LaminaBuscador extends JPanel{
 		JButton editarTarea=new JButton("Editar tarea");
 		
 		editarTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		editarTarea.addActionListener(new BotonAccionEditar());
 		
 		cajaBuscador.add(editarTarea);
 		
@@ -322,6 +306,261 @@ class LaminaBuscador extends JPanel{
 		
 	}
 	
+	private class BotonAccionEditar implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			LaminaBuscador l=new LaminaBuscador();
+			
+			
+			ClaseUtilidades.abrirNuevoMarco(new LaminaEditar(l), "Editar tarea");
+			
+		}
+		
+			// TODO Auto-generated method stub
+			
+			class LaminaEditar extends JPanel{
+				
+				Font miFuente=new Font("Arial",Font.BOLD,25);
+				
+				private JTextField cuadroTarea;
+				
+				private JComboBox comboTipo;
+				
+				private JTextArea texto1;
+				
+				private LaminaBuscador laminaBuscador;
+				
+				private Tarea tareax=(Tarea)comboBuscador.getSelectedItem();
+				
+				//hacemos lo mismo con el metodo laminaAniadir, le pasamos por parametro laminaBuscador y le decimos que la lamina buscador que hay aqui es la misma que la de la clase lamina buscador
+				public LaminaEditar(LaminaBuscador laminaBuscador) {
+					
+					this.laminaBuscador=laminaBuscador;
+					
+					setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+					
+					add(createLaminaTarea());
+					
+					add(createLaminaTipo());
+					
+					add(createLaminaDesc());
+					
+					
+					
+					
+					
+					
+				}
+					
+					private JPanel createLaminaTarea() {
+						//creamos un panel y le ponemos un flowLayout
+						JPanel panel=new JPanel();
+						
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+						
+						
+						//creamos una caja que insertaremos posteriormente en el panel
+						Box cajaTarea=Box.createVerticalBox();
+						
+						//creamos un label
+						JLabel tarea=new JLabel("Tarea");
+						
+						tarea.setFont(miFuente);
+						
+						tarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+						
+						cajaTarea.add(tarea);
+						
+						
+						//añadimos un espacio entre los elementos de la caja
+						cajaTarea.add(Box.createVerticalStrut(25));
+						
+						
+						//creamos un cuadro
+						cuadroTarea=new JTextField(20);
+						
+						cuadroTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+						
+						cajaTarea.add(cuadroTarea);
+						
+						cuadroTarea.setText(tareax.getNombre());
+						
+						
+						//añadimos la caja al panel
+						panel.add(cajaTarea);
+						
+						return panel;
+						
+						
+					}
+					
+					private JPanel createLaminaTipo() {
+						
+						JPanel panel=new JPanel();
+						
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+						
+						
+						
+						Box cajaTipo=Box.createVerticalBox();
+						
+						
+						JLabel tipoTarea=new JLabel("Tipo de Tarea");
+						
+						tipoTarea.setFont(miFuente);
+						
+						tipoTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
+						
+						cajaTipo.add(tipoTarea);
+						
+						
+						
+						
+						cajaTipo.add(Box.createVerticalStrut(25));
+						
+						
+						
+						comboTipo=new JComboBox();
+						
+						comboTipo.setAlignmentX(Component.CENTER_ALIGNMENT);
+						
+						comboTipo.addItem("Importante");
+						
+						comboTipo.addItem("Aplazable");
+						
+						comboTipo.addItem("Opcional");
+						
+						comboTipo.setSelectedItem(tareax.getImportancia());
+						
+						cajaTipo.add(comboTipo);
+						
+						
+						
+						
+						panel.add(cajaTipo);
+						
+						return panel;
+						
+						
+					}
+					
+					private JPanel createLaminaDesc() {
+						
+						JPanel panel=new JPanel();
+						
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+						
+						
+						
+						Box cajaDesc=Box.createVerticalBox();
+						
+						
+						
+						JLabel descripcion=new JLabel("Descripcion");
+						
+						descripcion.setFont(miFuente);
+						
+						descripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
+						
+						cajaDesc.add(descripcion);
+						
+						
+						
+						cajaDesc.add(Box.createVerticalStrut(15));
+						
+						
+						
+						texto1=new JTextArea(5,35);
+						
+						cajaDesc.add(new JScrollPane(texto1));
+						
+						texto1.setText(tareax.getDescripcion());
+						
+						
+						
+						JButton aniadir=new JButton("Editar");
+						
+						cajaDesc.add(Box.createVerticalStrut(15));
+						
+						cajaDesc.add(aniadir);
+						
+						aniadir.addActionListener(new AccionBotonCambiar());
+						
+						aniadir.setAlignmentX(Component.CENTER_ALIGNMENT);
+						
+						
+						
+						panel.add(cajaDesc);
+						
+						return panel;
+						
+						
+					}
+					
+					
+					class AccionBotonCambiar implements ActionListener{
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							
+							Tarea tareaSeleccionada=(Tarea) comboBuscador.getSelectedItem();
+							
+							if(tareaSeleccionada!=null) {
+								
+							String nuevoNombre=cuadroTarea.getText();
+								
+							String nuevaImpor=(String)comboTipo.getSelectedItem();
+							
+							String nuevaDesc=texto1.getText();
+							
+							String tareaNombre=tareaSeleccionada.getNombre();
+							
+							String tareaImpor=tareaSeleccionada.getImportancia();
+							
+							String tareaDesc=tareaSeleccionada.getDescripcion();
+						
+							
+							String sql="update tablaTareas set Nombre=?,Importancia=?,Descripcion=? where 1=1";
+
+							
+							try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/tareas","root","");
+									PreparedStatement ps=con.prepareStatement(sql)){
+								ps.setString(1, nuevoNombre);
+								ps.setString(2, nuevaImpor);
+								ps.setString(3, nuevaDesc);
+								ps.setString(4,tareaNombre);
+								ps.setString(5, tareaImpor);
+								ps.setString(6, tareaDesc);
+								
+								int r=ps.executeUpdate();
+									
+								
+							}catch(Exception t) {
+								
+								t.printStackTrace();
+								
+							}
+							
+							comboBuscador.setSelectedItem(null);
+							
+						}else{
+							JOptionPane.showMessageDialog(LaminaBuscador.this,"No has seleccionado ninguna tarea");
+						}
+							}
+						
+					}
+			
+		
+		}
+			
+		
+		
+		
+	}
+	
 	
 }
 
@@ -354,15 +593,17 @@ class LaminaAniadir extends JPanel{
 	}
 		
 		private JPanel createLaminaTarea() {
-			
+			//creamos un panel y le ponemos un flowLayout
 			JPanel panel=new JPanel();
 			
 			panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			
+			
+			//creamos una caja que insertaremos posteriormente en el panel
 			Box cajaTarea=Box.createVerticalBox();
 			
+			//creamos un label
 			JLabel tarea=new JLabel("Tarea");
-			
 			
 			tarea.setFont(miFuente);
 			
@@ -370,14 +611,20 @@ class LaminaAniadir extends JPanel{
 			
 			cajaTarea.add(tarea);
 			
+			
+			//añadimos un espacio entre los elementos de la caja
 			cajaTarea.add(Box.createVerticalStrut(25));
 			
+			
+			//creamos un cuadro
 			cuadroTarea=new JTextField(20);
 			
 			cuadroTarea.setAlignmentX(Component.CENTER_ALIGNMENT);
 			
 			cajaTarea.add(cuadroTarea);
 			
+			
+			//añadimos la caja al panel
 			panel.add(cajaTarea);
 			
 			return panel;
@@ -391,7 +638,10 @@ class LaminaAniadir extends JPanel{
 			
 			panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			
+			
+			
 			Box cajaTipo=Box.createVerticalBox();
+			
 			
 			JLabel tipoTarea=new JLabel("Tipo de Tarea");
 			
@@ -401,7 +651,12 @@ class LaminaAniadir extends JPanel{
 			
 			cajaTipo.add(tipoTarea);
 			
+			
+			
+			
 			cajaTipo.add(Box.createVerticalStrut(25));
+			
+			
 			
 			comboTipo=new JComboBox();
 			
@@ -414,6 +669,9 @@ class LaminaAniadir extends JPanel{
 			comboTipo.addItem("Opcional");
 			
 			cajaTipo.add(comboTipo);
+			
+			
+			
 			
 			panel.add(cajaTipo);
 			
@@ -428,7 +686,11 @@ class LaminaAniadir extends JPanel{
 			
 			panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 			
+			
+			
 			Box cajaDesc=Box.createVerticalBox();
+			
+			
 			
 			JLabel descripcion=new JLabel("Descripcion");
 			
@@ -438,7 +700,11 @@ class LaminaAniadir extends JPanel{
 			
 			cajaDesc.add(descripcion);
 			
+			
+			
 			cajaDesc.add(Box.createVerticalStrut(15));
+			
+			
 			
 			texto1=new JTextArea(5,35);
 			
